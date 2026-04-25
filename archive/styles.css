@@ -1,0 +1,131 @@
+/* ── Layout ── */
+html, body {
+  height: 100%;
+}
+
+body {
+  background: #fff;
+  color: #212529;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#page-content {
+  flex: 1;
+}
+
+/* ── Search bar ── */
+#result-count {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+/* ── NFT Grid ── */
+.nft-card {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+}
+
+.nft-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.nft-card.loading {
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { background: #f8f9fa; }
+  50%       { background: #e9ecef; }
+}
+
+.nft-card .label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.72rem;
+  padding: 3px 6px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.nft-card:hover .label {
+  opacity: 1;
+}
+
+/* ── Empty state ── */
+#empty {
+  display: none;
+}
+
+/* ── Detail overlay ── */
+#detail {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 1050;
+  overflow-y: auto;
+  /* also flex column so footer sticks to bottom */
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#detail.active {
+  display: flex;
+}
+
+#detail-body {
+  flex: 1;
+}
+
+.detail-image img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border: 1px solid #dee2e6;
+}
+
+/* ── Metadata JSON block ── */
+.json-block {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 12px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.json-block .key { color: #d63384; }
+.json-block .str { color: #198754; }
+.json-block .num { color: #0d6efd; }
+
+/* ── Footer ── */
+footer {
+  flex-shrink: 0;
+}
+
+/* ── Additions ── */
+
+@media (min-width: 1200px) {
+  #grid {
+    grid-template-columns: repeat(9, 1fr);
+    display: grid;
+  }
+  #grid .col {
+    width: auto;
+  }
+}

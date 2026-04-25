@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArtWarsNFT.com Collection Viewer</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../favicon/site.webmanifest">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar navbar-light bg-light border-bottom">
+    <div class="container-fluid justify-content-center">
+      <span class="navbar-brand fw-bold mb-0">ArtWarsNFT.com Collection Viewer</span>
+    </div>
+  </nav>
+
+  <!-- ── Sticky search bar ── -->
+  <div class="container-fluid py-2 border-bottom bg-white sticky-top shadow-sm" style="z-index:100">
+    <div class="row align-items-center justify-content-center g-2">
+      <div class="col-md-5 col-lg-3">
+        <input type="text" id="search" class="form-control form-control-sm"
+               placeholder="Search by token number…" autocomplete="off" inputmode="numeric">
+      </div>
+      <div class="col-auto">
+        <span id="result-count" class="text-muted small"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Grid ── -->
+  <div id="page-content" class="container-fluid py-2">
+    <div id="grid" class="row row-cols-3 row-cols-sm-4 row-cols-md-6 row-cols-lg-10 row-cols-xl-12 g-1"></div>
+    <div id="empty" class="text-center text-muted py-5">No results found.</div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="bg-dark text-white text-center py-3 mt-auto">
+    <div class="container">
+      <p class="mb-1 small">© <script>document.write(new Date().getFullYear())</script> ArtWarsNFT.com</p>
+      <p class="mb-0" style="font-size:.75rem">
+        All images are copyright/trademark of their respective owners. This website is not affiliated with the creators of the Art Wars NFT project.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ── Detail overlay ── -->
+  <div id="detail">
+
+    <nav class="navbar navbar-light bg-light border-bottom sticky-top">
+      <div class="container-fluid">
+        <button class="btn btn-outline-secondary btn-sm" id="back-btn">← Back to Collection</button>
+        <span class="navbar-text fw-semibold" id="detail-title"></span>
+      </div>
+    </nav>
+
+    <div id="detail-body" class="container py-4">
+      <div class="row g-4">
+        <div class="col-md-6 text-center detail-image" id="detail-image-pane">
+          <div class="spinner-border text-secondary" role="status"></div>
+        </div>
+        <div class="col-md-6" id="detail-info-pane">
+          <div class="spinner-border text-secondary" role="status"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer repeated inside detail overlay -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+      <div class="container">
+        <p class="mb-1 small">© <script>document.write(new Date().getFullYear())</script> ArtWarsNFT.com</p>
+        <p class="mb-0" style="font-size:.75rem">
+          All images are copyright/trademark of their respective owners. This website is not affiliated with the creators of the Art Wars NFT project.
+        </p>
+      </div>
+    </footer>
+
+  </div><!-- /#detail -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+
+</body>
+</html>
