@@ -1,7 +1,9 @@
 const TOTAL = 1138;
-
-// Your Cloudflare R2 custom domain
 const STORAGE_BASE = 'https://storage.artwarsnft.com';
+
+// The 6 tokens whose original high-res images were removed
+const REMOVED_TOKENS = new Set([475, 558, 823, 859, 866, 1076]);
+const REPLACEMENT_CID = 'QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS';
 
 const allTokens = Array.from({ length: TOTAL }, (_, i) => i + 1);
 
@@ -14,9 +16,9 @@ const detailTitle    = document.getElementById('detail-title');
 const detailImgPane  = document.getElementById('detail-image-pane');
 const detailInfoPane = document.getElementById('detail-info-pane');
 const backBtn        = document.getElementById('back-btn');
+const artistFilter   = document.getElementById('artist-filter');
 
-let metadata = {};          // will hold the entire metadata.json
-const metaCache = {};       // just in case
+let metadata = {};
 
 // ── Load local metadata.json once ──
 async function loadMetadata() {
@@ -25,6 +27,34 @@ async function loadMetadata() {
     if (!res.ok) throw new Error('Failed to load metadata.json');
     metadata = await res.json();
     console.log(`Loaded metadata for ${Object.keys(metadata).length} tokens`);
+
+    // Build unique artist list
+    const artists = new Set();
+    Object.values(metadata).forEach(m => {
+      if (m.attributes) {
+        m.attributes.forEach(a => {
+          if (a.trait_type === 'Artist' && a.value) {
+            artists.add(a.value);
+          }
+        });
+      }
+    });
+
+    // Populate the dropdown (sorted alphabetically)
+    const sortedArtists = Array.from(artists).sort((a, b) => a.localeCompare(b));
+    sortedArtists.forEach(artist => {
+      const opt = document.createElement('option');
+      opt.value = artist;
+      opt.textContent = artist;
+      artistFilter.appendChild(opt);
+    });
+
+    // Add "Removed" option at the bottom
+    const removedOpt = document.createElement('option');
+    removedOpt.value = '__removed__';
+    removedOpt.textContent = 'Removed';
+    artistFilter.appendChild(removedOpt);
+
   } catch (err) {
     console.error(err);
     alert('Could not load metadata.json. Make sure the file is in the same folder as the page.');
@@ -54,11 +84,20 @@ function renderGrid(tokens) {
     card.className  = 'nft-card loading';
     card.dataset.id = id;
 
-    const label = document.createElement('div');
-    label.className   = 'label';
-    label.textContent = `#${id}`;
-    card.appendChild(label);
+    if (REMOVED_TOKENS.has(id)) {
+      card.classList.add('removed');
+    }
 
+    const label = document.createElement('div');
+    label.className = 'label';
+
+    if (REMOVED_TOKENS.has(id)) {
+      label.innerHTML = `<span>#${id}</span><span class="removed-tag">REMOVED</span>`;
+    } else {
+      label.textContent = `#${id}`;
+    }
+
+    card.appendChild(label);
     card.addEventListener('click', () => openDetail(id));
     col.appendChild(card);
     gridEl.appendChild(col);
@@ -81,7 +120,7 @@ function observeCards() {
       const id = parseInt(card.dataset.id, 10);
       const img = document.createElement('img');
       img.alt = `Art Wars #${id}`;
-      img.src = `${STORAGE_BASE}/nft/${id}.png`;   // ← low-res from R2
+      img.src = `${STORAGE_BASE}/nft/${id}.png`;
       img.onload  = () => card.classList.remove('loading');
       img.onerror = () => card.classList.remove('loading');
       card.insertBefore(img, card.querySelector('.label'));
@@ -91,14 +130,35 @@ function observeCards() {
   document.querySelectorAll('.nft-card.loading').forEach(c => observer.observe(c));
 }
 
-// ── Search ──
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim();
-  const tokens = q === ''
-    ? allTokens
-    : allTokens.filter(id => String(id).includes(q));
+// ── Combined filter (search + artist) ──
+function applyFilters() {
+  const q = searchInput.value.trim().toLowerCase();
+  const selectedArtist = artistFilter.value;
+
+  let tokens = allTokens;
+
+  // Artist / Removed filter
+  if (selectedArtist === '__removed__') {
+    tokens = tokens.filter(id => REMOVED_TOKENS.has(id));
+  } else if (selectedArtist !== 'all') {
+    tokens = tokens.filter(id => {
+      const meta = metadata[String(id)] || metadata[id];
+      if (!meta || !meta.attributes) return false;
+      return meta.attributes.some(a => a.trait_type === 'Artist' && a.value === selectedArtist);
+    });
+  }
+
+  // Token number search
+  if (q !== '') {
+    tokens = tokens.filter(id => String(id).includes(q));
+  }
+
   renderGrid(tokens);
-});
+}
+
+// Wire up both controls
+searchInput.addEventListener('input', applyFilters);
+artistFilter.addEventListener('change', applyFilters);
 
 // ── Open detail view ──
 async function openDetail(id) {
@@ -115,14 +175,23 @@ async function openDetail(id) {
     return;
   }
 
+  const isRemoved = REMOVED_TOKENS.has(id);
   const cid = extractCid(meta.image);
 
-  // High-res image from R2
-  if (cid) {
+  // ── Image pane ──
+  if (isRemoved) {
+    // Show both low-res (original) and replacement high-res side by side
+    detailImgPane.innerHTML = `
+      <div class="detail-removed-images">
+        <img src="${STORAGE_BASE}/cid/${REPLACEMENT_CID}.png" alt="Replacement image">
+        <img src="${STORAGE_BASE}/nft/${id}.png" alt="Art Wars #${id} (low-res)">
+      </div>
+    `;
+  } else if (cid) {
     const img = document.createElement('img');
     img.alt = `Art Wars #${id}`;
     img.className = 'img-fluid';
-    img.src = `${STORAGE_BASE}/cid/${cid}.png`;   // ← high-res from R2
+    img.src = `${STORAGE_BASE}/cid/${cid}.png`;
     img.onload  = () => {
       detailImgPane.innerHTML = '';
       detailImgPane.appendChild(img);
@@ -134,7 +203,7 @@ async function openDetail(id) {
     detailImgPane.innerHTML = '<p class="text-muted">No image found.</p>';
   }
 
-  // Info pane
+  // ── Info pane ──
   let html = `<h5 class="mb-3">Art Wars #${id}</h5>`;
 
   if (meta.attributes && meta.attributes.length > 0) {
@@ -149,16 +218,32 @@ async function openDetail(id) {
     html += `</div>`;
   }
 
-  const imgUrl = cid ? `${STORAGE_BASE}/cid/${cid}.png` : null;
+  const imgUrl = isRemoved
+    ? `${STORAGE_BASE}/cid/${REPLACEMENT_CID}.png`
+    : (cid ? `${STORAGE_BASE}/cid/${cid}.png` : null);
 
   html += `<p class="text-uppercase text-muted mb-1" style="font-size:.7rem;letter-spacing:.08em">Links</p>
     <ul class="list-unstyled small mb-4">
-      ${imgUrl ? `<li class="mb-1"><span class="text-muted">Full Image:</span> <a href="${imgUrl}" target="_blank" rel="noopener" class="text-break">${imgUrl}</a></li>` : ''}
+      ${imgUrl ? `<li class="mb-1"><span class="text-muted">Image:</span> <a href="${imgUrl}" target="_blank" rel="noopener" class="text-break">${imgUrl}</a></li>` : ''}
       ${meta.external_url ? `<li class="mb-1"><span class="text-muted">External URL:</span> <a href="${meta.external_url}" target="_blank" rel="noopener">${meta.external_url}</a></li>` : ''}
     </ul>`;
 
+  // Normal metadata JSON block
   html += `<p class="text-uppercase text-muted mb-1" style="font-size:.7rem;letter-spacing:.08em">Metadata JSON</p>
     <pre class="json-block">${syntaxHighlight(JSON.stringify(meta, null, 2))}</pre>`;
+
+  // Special red warning for the 6 removed tokens
+  if (isRemoved) {
+    html += `
+      <div class="removed-warning">
+        <strong>Image Removed</strong>
+        The original high resolution image of this NFT was removed from the project and replaced.
+        You are viewing the original low resolution image and the replacement image.
+        If you have access to the original high resolution image, please send it to
+        <a href="mailto:info@artwarsnft.com">info@artwarsnft.com</a>.
+      </div>
+    `;
+  }
 
   detailInfoPane.innerHTML = html;
 }
@@ -191,5 +276,5 @@ function syntaxHighlight(json) {
 // ── Init ──
 (async () => {
   await loadMetadata();
-  renderGrid(allTokens);
+  applyFilters();          // ← changed from renderGrid(allTokens)
 })();

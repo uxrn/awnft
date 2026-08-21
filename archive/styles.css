@@ -129,3 +129,61 @@ footer {
     width: auto;
   }
 }
+
+/* ── Removed NFTs special styling ── */
+
+.nft-card.removed .label {
+  background: rgba(180, 30, 30, 0.85);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 8px;
+}
+
+.nft-card.removed .label .removed-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.95;
+}
+
+/* Detail page – side-by-side images for removed NFTs */
+.detail-removed-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.detail-removed-images img {
+  width: 48%;
+  max-height: 55vh;
+  object-fit: contain;
+  border: 1px solid #dee2e6;
+}
+
+@media (max-width: 767.98px) {
+  .detail-removed-images img {
+    width: 100%;
+  }
+}
+
+/* Red warning block */
+.removed-warning {
+  background: #fff5f5;
+  border: 1px solid #f5c2c7;
+  border-left: 5px solid #dc3545;
+  border-radius: 4px;
+  padding: 14px 16px;
+  margin-top: 1.5rem;
+  color: #842029;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.removed-warning strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
