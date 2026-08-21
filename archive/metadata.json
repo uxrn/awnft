@@ -5216,7 +5216,13 @@
   "475": {
     "name": "Art Wars #475",
     "external_url": "https://www.artwarsnft.com/",
-    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS"
+    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS",
+    "attributes": [
+      {
+        "trait_type": "Artist",
+        "value": "Mat Collishaw"
+      }
+    ]
   },
   "476": {
     "name": "Art Wars #476",
@@ -6123,7 +6129,13 @@
   "558": {
     "name": "Art Wars #558",
     "external_url": "https://www.artwarsnft.com/",
-    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS"
+    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS",
+    "attributes": [
+      {
+        "trait_type": "Artist",
+        "value": "Knuckle Bone"
+      }
+    ]
   },
   "559": {
     "name": "Art Wars #559",
@@ -9032,7 +9044,13 @@
   "823": {
     "name": "Art Wars #823",
     "external_url": "https://www.artwarsnft.com/",
-    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS"
+    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS",
+    "attributes": [
+      {
+        "trait_type": "Artist",
+        "value": "Hayden Kays"
+      }
+    ]
   },
   "824": {
     "name": "Art Wars #824",
@@ -9422,7 +9440,13 @@
   "859": {
     "name": "Art Wars #859",
     "external_url": "https://www.artwarsnft.com/",
-    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS"
+    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS",
+    "attributes": [
+      {
+        "trait_type": "Artist",
+        "value": "Hayden Kays"
+      }
+    ]
   },
   "860": {
     "name": "Art Wars #860",
@@ -9493,7 +9517,13 @@
   "866": {
     "name": "Art Wars #866",
     "external_url": "https://www.artwarsnft.com/",
-    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS"
+    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS",
+    "attributes": [
+      {
+        "trait_type": "Artist",
+        "value": "Paul Fryer"
+      }
+    ]
   },
   "867": {
     "name": "Art Wars #867",
@@ -11797,7 +11827,13 @@
   "1076": {
     "name": "Art Wars #1076",
     "external_url": "https://www.artwarsnft.com/",
-    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS"
+    "image": "https://artwars.mypinata.cloud/ipfs/QmNuKoQdRtASNfuir3G96uRqrMAZoV64KSJfo3hCoEhmPS",
+    "attributes": [
+      {
+        "trait_type": "Artist",
+        "value": "Sir Anish Kapoor"
+      }
+    ]
   },
   "1077": {
     "name": "Art Wars #1077",
